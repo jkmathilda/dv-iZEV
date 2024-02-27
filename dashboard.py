@@ -13,7 +13,7 @@ df['Month and Year'] = pd.to_datetime(df['Month and Year'], format="%B %Y")
 df = df.sort_values('Incentive Request Date')
 
 # 1. Car count per province % Month and year
-col11, col12, col13 = st.columns([1, 6, 1])
+col11, col12, col13 = st.columns([1.5, 6, 1])
 with col12: 
     print(df.columns)
     car_count_per_month = df['Month and Year'].value_counts().reset_index()
@@ -31,18 +31,19 @@ with col12:
         render_mode="svg"
     )
     fig.update_layout(
-    width=1200,  # Width in pixels
-    height=800,  # Height in pixels
+    width=1000,  # Width in pixels
+    height=600,  # Height in pixels
     )
     st.plotly_chart(fig)
 
 
 # 2. Vehicle brands & model count (month and year)
+st.divider()
 col21, col22, col23 = st.columns([1, 3, 3])
 with col22:
     fig = px.sunburst(
         df, 
-        title="Vehicle Make & Model Count",
+        title="Vehicle Make and Models for each",
         path=['Vehicle Make', 'Vehicle Model']
     )
     st.plotly_chart(fig)
@@ -56,7 +57,8 @@ with col23:
     st.plotly_chart(fig)
     
 # 3. Incentive amount count (focus on 2500 and 5000)
-col31, col32, col33 = st.columns([1, 6, 1])
+st.divider()
+col31, col32, col33 = st.columns([1.5, 6, 1])
 with col32: 
     df['Eligible Incentive Amount'] = df['Eligible Incentive Amount'].str.replace(',', '')
     df['Eligible Incentive Amount'] = pd.to_numeric(df['Eligible Incentive Amount'])
@@ -68,11 +70,16 @@ with col32:
     df['Eligible Incentive Amounts'] = pd.cut(df['Eligible Incentive Amount'], bins=bins, labels=labels, include_lowest=True)
 
     fig = px.treemap(df, title="Eligible Incentive Amounts",
-                    path=[px.Constant('All Vehicles'), 'Vehicle Make', 'Battery-Electric Vehicle (BEV), Plug-in Hybrid Electric Vehicle (PHEV) or Fuel Cell Electric Vehicle (FCEV)'], 
+                    path=[px.Constant('All Vehicles'), 
+                          'Eligible Incentive Amounts',
+                          'Battery-Electric Vehicle (BEV), Plug-in Hybrid Electric Vehicle (PHEV) or Fuel Cell Electric Vehicle (FCEV)',
+                          'Vehicle Make', 
+                          ], 
+                    values='Eligible Incentive Amount'
                     )
     
     fig.update_layout(
-    width=1200,  # Width in pixels
-    height=800,  # Height in pixels
+    width=1000,
+    height=600,
     )
     st.plotly_chart(fig)
