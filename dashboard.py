@@ -7,39 +7,31 @@ from plotly.subplots import make_subplots
 st.set_page_config(page_title="iZEV Dashboard", layout="wide")
 st.header("📊 Data Visualization: Incentives for Zero-Emission Vehicles (iZEV) Program FY2019-23")
 
+# Dataframe
 df = pd.read_csv("izev.csv", skipinitialspace=True)
 df = df.applymap(lambda x: x.strip() if isinstance(x, str) else x)
 df.columns = df.columns.str.strip()
-# df = df.sort_values('Incentive Request Date')
+df['Month and Year'] = pd.to_datetime(df['Month and Year'], format="%B %Y")
+df = df.sort_values('Incentive Request Date')
 
 # 1. Car count per province % Month and year
 col11, col12, col13 = st.columns([2, 6, 1])
 with col12: 
     print(df.columns)
     car_count_per_month = df['Month and Year'].value_counts().reset_index()
-    car_count_per_month.columns = ['Month and Year', 'Number of Vehicles']
-    df_aggregated = df.groupby(['Month and Year', 'Recipient Province / Territory']).size().reset_index(name='Number of Vehicles')
+    car_count_per_month.columns = ['Month and Year', 'Number of Inventive Requests']
+    df_aggregated = df.groupby(['Month and Year', 'Recipient Province / Territory']).size().reset_index(name='Number of Incentive Requests')
     print(df_aggregated.columns)
     fig = px.line(
         df_aggregated,
-        title="Number of Vehicles per Province",
+        title="Number of Incentive Requests per Province",
         x="Month and Year", 
-        y="Number of Vehicles", 
+        y="Number of Incentive Requests", 
         color="Recipient Province / Territory", 
         line_group="Recipient Province / Territory", 
         line_shape="spline", 
         render_mode="svg"
     )
-    # fig = px.line(
-    #     df,
-    #     car_count_per_month,
-    #     x="Incentive Request Date", 
-    #     y="Number of Vehicles", 
-    #     color="Recipient Province / Territory", 
-    #     line_group="Recipient Province / Territory", 
-    #     line_shape="spline", 
-    #     render_mode="svg"
-    # )
     st.plotly_chart(fig)
 
 
