@@ -31,7 +31,7 @@ To get started with this project, you'll need to clone the repository and set up
 
 ### Running the Application
 
-    python dashboard.py
+    python -m streamlit run dashboard.py
     
 ### Deactivate the virtual environment
 
