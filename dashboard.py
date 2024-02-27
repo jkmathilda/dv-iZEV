@@ -52,3 +52,20 @@ with col22:
         path=['Battery-Electric Vehicle (BEV), Plug-in Hybrid Electric Vehicle (PHEV) or Fuel Cell Electric Vehicle (FCEV)', 'Vehicle Make']
     )
     st.plotly_chart(fig)
+    
+# 3. Incentive amount count (focus on 2500 and 5000)
+col31, col32, col33 = st.columns([2, 6, 1])
+with col32: 
+    df['Eligible Incentive Amount'] = df['Eligible Incentive Amount'].str.replace(',', '')
+    df['Eligible Incentive Amount'] = pd.to_numeric(df['Eligible Incentive Amount'])
+    # Binning
+    bins = [0, 2500, 5000]
+    labels = ['low to medium', 'medium to high']
+
+    # Create a new column 'Incentive Amount' based on binning
+    df['Eligible Incentive Amounts'] = pd.cut(df['Eligible Incentive Amount'], bins=bins, labels=labels, include_lowest=True)
+
+    fig = px.treemap(df, title="Eligible Incentive Amounts",
+                    path=[px.Constant('All Vehicles'), 'Vehicle Make', 'Battery-Electric Vehicle (BEV), Plug-in Hybrid Electric Vehicle (PHEV) or Fuel Cell Electric Vehicle (FCEV)'], 
+                    )
+    st.plotly_chart(fig)
