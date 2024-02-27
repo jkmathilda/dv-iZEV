@@ -39,7 +39,7 @@ with col12:
 
 # 2. Vehicle brands & model count (month and year)
 st.divider()
-col21, col22, col23 = st.columns([1, 3, 3])
+col21, col22, col23 = st.columns([1, 4, 4])
 with col22:
     fig = px.sunburst(
         df, 
@@ -75,7 +75,8 @@ with col32:
                           'Battery-Electric Vehicle (BEV), Plug-in Hybrid Electric Vehicle (PHEV) or Fuel Cell Electric Vehicle (FCEV)',
                           'Vehicle Make', 
                           ], 
-                    values='Eligible Incentive Amount'
+                    values='Eligible Incentive Amount',
+                    color_continuous_scale='RdBu',
                     )
     
     fig.update_layout(
