@@ -61,7 +61,7 @@ with col21:
         yearly_df = df[df['Calendar Year'] == year]
         fig = px.sunburst(
             yearly_df, 
-            title="Vehicle Make and Models for each",
+            title="Vehicle Make and Models for each in " + year,
             path=['Vehicle Make', 'Vehicle Model']
         )
         st.plotly_chart(fig)
@@ -84,7 +84,7 @@ with col22:
         yearly_df = df[df['Calendar Year'] == year]
         fig = px.sunburst(
             yearly_df,
-            title="Types of Electric Vehicle: BEV, PHEV, FCEV",
+            title="Types of Electric Vehicle in " + year + ": BEV, PHEV, FCEV",
             path=['Battery-Electric Vehicle (BEV), Plug-in Hybrid Electric Vehicle (PHEV) or Fuel Cell Electric Vehicle (FCEV)', 'Vehicle Make']
         )
         st.plotly_chart(fig)
