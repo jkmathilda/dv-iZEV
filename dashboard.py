@@ -94,8 +94,7 @@ with col22:
             path=['Battery-Electric Vehicle (BEV), Plug-in Hybrid Electric Vehicle (PHEV) or Fuel Cell Electric Vehicle (FCEV)', 'Vehicle Make']
         )
         st.plotly_chart(fig)
-    st.markdown("- Most incentive requests are from people with BEV vehicles. ")
-    st.markdown("- From 2019 to 2023, the number of incentive requests with BEV vehicles had increased. ")
+    st.markdown("- Most incentive requests are from people with BEV vehicles, and from 2019 to 2023, the number of incentive requests with BEV vehicles had increased. ")
     
 # 3. Incentive amount count (focus on 2500 and 5000)
 st.divider()
