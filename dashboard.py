@@ -49,10 +49,18 @@ with col21:
         label='Select Year:',
         key='year1'
     )
-    
+    df['Calendar Year'] = df['Calendar Year'].astype(str)
     if year == 'Total':
         fig = px.sunburst(
             df, 
+            title="Vehicle Make and Models for each",
+            path=['Vehicle Make', 'Vehicle Model']
+        )
+        st.plotly_chart(fig)
+    else:
+        yearly_df = df[df['Calendar Year'] == year]
+        fig = px.sunburst(
+            yearly_df, 
             title="Vehicle Make and Models for each",
             path=['Vehicle Make', 'Vehicle Model']
         )
@@ -64,10 +72,18 @@ with col22:
         label='Select Year:',
         key='year2'
     )
-    
+    df['Calendar Year'] = df['Calendar Year'].astype(str)
     if year == 'Total':
         fig = px.sunburst(
             df,
+            title="Types of Electric Vehicle: BEV, PHEV, FCEV",
+            path=['Battery-Electric Vehicle (BEV), Plug-in Hybrid Electric Vehicle (PHEV) or Fuel Cell Electric Vehicle (FCEV)', 'Vehicle Make']
+        )
+        st.plotly_chart(fig)
+    else:
+        yearly_df = df[df['Calendar Year'] == year]
+        fig = px.sunburst(
+            yearly_df,
             title="Types of Electric Vehicle: BEV, PHEV, FCEV",
             path=['Battery-Electric Vehicle (BEV), Plug-in Hybrid Electric Vehicle (PHEV) or Fuel Cell Electric Vehicle (FCEV)', 'Vehicle Make']
         )
