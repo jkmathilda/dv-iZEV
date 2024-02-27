@@ -157,3 +157,6 @@ with col32:
     st.plotly_chart(fig)
     st.markdown("- Most Battery-Electric Vehicles (BEV) are eligible for incentives worth $5000. ")
     st.markdown("- Among the Plug-in Hybrid Electric Vehicles (PHEV), vehicles from Chrysler, Honda, Chevrolet are eligible for high incentives, and PHEV vehicles from Jeep and Subaru has a very low eligible incentive amount. ")
+    
+    st.divider()
+    st.markdown("Data used: https://open.canada.ca/en/working-data-api/structured-data")
