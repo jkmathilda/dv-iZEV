@@ -1,8 +1,6 @@
 import pandas as pd
 import streamlit as st
 import plotly.express as px
-import plotly.graph_objects as go
-from plotly.subplots import make_subplots
 
 st.set_page_config(page_title="iZEV Dashboard", layout="wide")
 st.header("📊 Data Visualization: Incentives for Zero-Emission Vehicles (iZEV) Program FY2019-23")
@@ -15,7 +13,7 @@ df['Month and Year'] = pd.to_datetime(df['Month and Year'], format="%B %Y")
 df = df.sort_values('Incentive Request Date')
 
 # 1. Car count per province % Month and year
-col11, col12, col13 = st.columns([2, 6, 1])
+col11, col12, col13 = st.columns([1, 6, 1])
 with col12: 
     print(df.columns)
     car_count_per_month = df['Month and Year'].value_counts().reset_index()
@@ -32,12 +30,16 @@ with col12:
         line_shape="spline", 
         render_mode="svg"
     )
+    fig.update_layout(
+    width=1200,  # Width in pixels
+    height=800,  # Height in pixels
+    )
     st.plotly_chart(fig)
 
 
 # 2. Vehicle brands & model count (month and year)
-col21, col22 = st.columns(2)
-with col21:
+col21, col22, col23 = st.columns([1, 3, 3])
+with col22:
     fig = px.sunburst(
         df, 
         title="Vehicle Make & Model Count",
@@ -45,7 +47,7 @@ with col21:
     )
     st.plotly_chart(fig)
     
-with col22: 
+with col23: 
     fig = px.sunburst(
         df,
         title="Types of Electric Vehicle: BEV, PHEV, FCEV",
@@ -54,7 +56,7 @@ with col22:
     st.plotly_chart(fig)
     
 # 3. Incentive amount count (focus on 2500 and 5000)
-col31, col32, col33 = st.columns([2, 6, 1])
+col31, col32, col33 = st.columns([1, 6, 1])
 with col32: 
     df['Eligible Incentive Amount'] = df['Eligible Incentive Amount'].str.replace(',', '')
     df['Eligible Incentive Amount'] = pd.to_numeric(df['Eligible Incentive Amount'])
@@ -68,4 +70,9 @@ with col32:
     fig = px.treemap(df, title="Eligible Incentive Amounts",
                     path=[px.Constant('All Vehicles'), 'Vehicle Make', 'Battery-Electric Vehicle (BEV), Plug-in Hybrid Electric Vehicle (PHEV) or Fuel Cell Electric Vehicle (FCEV)'], 
                     )
+    
+    fig.update_layout(
+    width=1200,  # Width in pixels
+    height=800,  # Height in pixels
+    )
     st.plotly_chart(fig)
