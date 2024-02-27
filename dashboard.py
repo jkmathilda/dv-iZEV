@@ -37,6 +37,9 @@ with col12:
     height=600,  # Height in pixels
     )
     st.plotly_chart(fig)
+    st.markdown("- Most incentive requests for zero-emission vehicles are from Quebec, British Columbia, Ontario in order. ")
+    st.markdown("- In general, the request rate notably decreases in winter. ")
+    st.markdown("- In January 2023, there was a sharp increase in incentive requests, specifically in Quebec, Ontario, British Columbia. ")
 
 
 # 2. Vehicle brands & model count (month and year)
@@ -66,6 +69,8 @@ with col21:
             path=['Vehicle Make', 'Vehicle Model']
         )
         st.plotly_chart(fig)
+    st.markdown("- Tesla, Hyundai, Toyota, and Chevrolet are the top vehicle makes with the most incentive requests. ")
+    st.markdown("- From 2019 to 2023, the incentive requests were from more diverse vehicle. ")
     
 with col22: 
     year = st.selectbox(
@@ -89,6 +94,8 @@ with col22:
             path=['Battery-Electric Vehicle (BEV), Plug-in Hybrid Electric Vehicle (PHEV) or Fuel Cell Electric Vehicle (FCEV)', 'Vehicle Make']
         )
         st.plotly_chart(fig)
+    st.markdown("- Most incentive requests are from people with BEV vehicles. ")
+    st.markdown("- From 2019 to 2023, the number of incentive requests with BEV vehicles had increased. ")
     
 # 3. Incentive amount count (focus on 2500 and 5000)
 st.divider()
@@ -149,3 +156,5 @@ with col32:
     height=600,
     )
     st.plotly_chart(fig)
+    st.markdown("- Most Battery-Electric Vehicles (BEV) are eligible for incentives worth $5000. ")
+    st.markdown("- Among the Plug-in Hybrid Electric Vehicles (PHEV), vehicles from Chrysler, Honda, Chevrolet are eligible for high incentives, and PHEV vehicles from Jeep and Subaru has a very low eligible incentive amount. ")
