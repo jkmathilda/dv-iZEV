@@ -41,23 +41,37 @@ with col12:
 # 2. Vehicle brands & model count (month and year)
 st.divider()
 st.subheader("Incentive Requests Ratio by Vehicle Make and Type of Electric Cars")
-col21, col22, col23 = st.columns([1, 4, 4])
+col21, col22 = st.columns(2)
 
-with col22:
-    fig = px.sunburst(
-        df, 
-        title="Vehicle Make and Models for each",
-        path=['Vehicle Make', 'Vehicle Model']
+with col21:
+    year = st.selectbox(
+        options=['Total', '2019', '2020', '2021', '2022', '2023'],
+        label='Select Year:',
+        key='year1'
     )
-    st.plotly_chart(fig)
     
-with col23: 
-    fig = px.sunburst(
-        df,
-        title="Types of Electric Vehicle: BEV, PHEV, FCEV",
-        path=['Battery-Electric Vehicle (BEV), Plug-in Hybrid Electric Vehicle (PHEV) or Fuel Cell Electric Vehicle (FCEV)', 'Vehicle Make']
+    if year == 'Total':
+        fig = px.sunburst(
+            df, 
+            title="Vehicle Make and Models for each",
+            path=['Vehicle Make', 'Vehicle Model']
+        )
+        st.plotly_chart(fig)
+    
+with col22: 
+    year = st.selectbox(
+        options=['Total', '2019', '2020', '2021', '2022', '2023'],
+        label='Select Year:',
+        key='year2'
     )
-    st.plotly_chart(fig)
+    
+    if year == 'Total':
+        fig = px.sunburst(
+            df,
+            title="Types of Electric Vehicle: BEV, PHEV, FCEV",
+            path=['Battery-Electric Vehicle (BEV), Plug-in Hybrid Electric Vehicle (PHEV) or Fuel Cell Electric Vehicle (FCEV)', 'Vehicle Make']
+        )
+        st.plotly_chart(fig)
     
 # 3. Incentive amount count (focus on 2500 and 5000)
 st.divider()
@@ -73,12 +87,13 @@ with col32:
 
     # Create a new column 'Incentive Amount' based on binning
     df['Eligible Incentive Amounts'] = pd.cut(df['Eligible Incentive Amount'], bins=bins, labels=labels, include_lowest=True)
-    group_counts = df.groupby(['Eligible Incentive Amounts', 'Battery-Electric Vehicle (BEV), Plug-in Hybrid Electric Vehicle (PHEV) or Fuel Cell Electric Vehicle (FCEV)', 'Vehicle Make']).size().reset_index(name='Counts')
-    group_averages = df.groupby(['Eligible Incentive Amounts', 'Battery-Electric Vehicle (BEV), Plug-in Hybrid Electric Vehicle (PHEV) or Fuel Cell Electric Vehicle (FCEV)', 'Vehicle Make'])['Eligible Incentive Amount'].mean().reset_index(name='Average Incentive Amount')
 
     # Merge counts with averages
-    # grouped_df = pd.merge(group_averages, group_counts, on=['Eligible Incentive Amounts', 'Battery-Electric Vehicle (BEV), Plug-in Hybrid Electric Vehicle (PHEV) or Fuel Cell Electric Vehicle (FCEV)', 'Vehicle Make'])
-    grouped_df = df.groupby(['Eligible Incentive Amounts', 'Battery-Electric Vehicle (BEV), Plug-in Hybrid Electric Vehicle (PHEV) or Fuel Cell Electric Vehicle (FCEV)', 'Vehicle Make'])['Eligible Incentive Amount'].mean().reset_index()
+    grouped_df = df.groupby(
+        ['Eligible Incentive Amounts', 
+         'Battery-Electric Vehicle (BEV), Plug-in Hybrid Electric Vehicle (PHEV) or Fuel Cell Electric Vehicle (FCEV)', 
+         'Vehicle Make']
+    )['Eligible Incentive Amount'].mean().reset_index()
         
     fig = px.treemap(grouped_df, title="Eligible Incentive Amounts",
                     path=[px.Constant('All Vehicles'), 
