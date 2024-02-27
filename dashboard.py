@@ -1,6 +1,7 @@
 import pandas as pd
 import streamlit as st
 import plotly.express as px
+import numpy as np
 
 st.set_page_config(page_title="iZEV Dashboard", layout="wide")
 st.header("📊 Data Visualization: Incentives for Zero-Emission Vehicles (iZEV) Program FY2019-23")
@@ -97,30 +98,51 @@ col31, col32, col33 = st.columns([1.5, 6, 1])
 with col32: 
     df['Eligible Incentive Amount'] = df['Eligible Incentive Amount'].str.replace(',', '')
     df['Eligible Incentive Amount'] = pd.to_numeric(df['Eligible Incentive Amount'])
-    # Binning
-    bins = [0, 2500, 5000]
-    labels = ['low to medium', 'medium to high']
+    # # Binning
+    # bins = [0, 2500, 5000]
+    # labels = ['low to medium', 'medium to high']
+    
+    df['Eligible Incentive Amount'] = pd.to_numeric(df['Eligible Incentive Amount'], errors='coerce')
+    df['Eligible Incentive Amounts'] = np.where(df['Eligible Incentive Amount'] <= 2500, 'low to medium', 'medium to high')
 
-    # Create a new column 'Incentive Amount' based on binning
-    df['Eligible Incentive Amounts'] = pd.cut(df['Eligible Incentive Amount'], bins=bins, labels=labels, include_lowest=True)
+    df_count = df.groupby(['Eligible Incentive Amounts', 
+                        'Battery-Electric Vehicle (BEV), Plug-in Hybrid Electric Vehicle (PHEV) or Fuel Cell Electric Vehicle (FCEV)', 
+                        'Vehicle Make']).size().reset_index(name='Count')
+
+    df_avg_incentive = df.groupby(['Eligible Incentive Amounts', 
+                                'Battery-Electric Vehicle (BEV), Plug-in Hybrid Electric Vehicle (PHEV) or Fuel Cell Electric Vehicle (FCEV)', 
+                                'Vehicle Make'])['Eligible Incentive Amount'].mean().reset_index(name='Average Incentive Amount')
+
+    df_merged = pd.merge(df_count, df_avg_incentive, on=['Eligible Incentive Amounts', 
+                                                        'Battery-Electric Vehicle (BEV), Plug-in Hybrid Electric Vehicle (PHEV) or Fuel Cell Electric Vehicle (FCEV)', 
+                                                        'Vehicle Make'])
+
+    fig = px.treemap(df_merged, 
+                    path=['Battery-Electric Vehicle (BEV), Plug-in Hybrid Electric Vehicle (PHEV) or Fuel Cell Electric Vehicle (FCEV)', 
+                        'Vehicle Make'], 
+                    values='Count',
+                    color='Average Incentive Amount',
+                    color_continuous_scale='RdBu',  
+                    title='Treemap of Vehicles by Incentive Amount and Type')
+
 
     # Merge counts with averages
-    grouped_df = df.groupby(
-        ['Eligible Incentive Amounts', 
-         'Battery-Electric Vehicle (BEV), Plug-in Hybrid Electric Vehicle (PHEV) or Fuel Cell Electric Vehicle (FCEV)', 
-         'Vehicle Make']
-    )['Eligible Incentive Amount'].mean().reset_index()
+    # grouped_df = df.groupby(
+    #     ['Eligible Incentive Amounts', 
+    #      'Battery-Electric Vehicle (BEV), Plug-in Hybrid Electric Vehicle (PHEV) or Fuel Cell Electric Vehicle (FCEV)', 
+    #      'Vehicle Make']
+    # )['Eligible Incentive Amount'].mean().reset_index()
         
-    fig = px.treemap(grouped_df, title="Eligible Incentive Amounts",
-                    path=[px.Constant('All Vehicles'), 
-                          'Eligible Incentive Amounts',
-                          'Battery-Electric Vehicle (BEV), Plug-in Hybrid Electric Vehicle (PHEV) or Fuel Cell Electric Vehicle (FCEV)',
-                          'Vehicle Make', 
-                          ], 
-                    values='Eligible Incentive Amount',
-                    # color='Counts',
-                    color_continuous_scale='Blues',
-                    )
+    # fig = px.treemap(grouped_df, title="Eligible Incentive Amounts",
+    #                 path=[px.Constant('All Vehicles'), 
+    #                       'Eligible Incentive Amounts',
+    #                       'Battery-Electric Vehicle (BEV), Plug-in Hybrid Electric Vehicle (PHEV) or Fuel Cell Electric Vehicle (FCEV)',
+    #                       'Vehicle Make', 
+    #                       ], 
+    #                 values='Eligible Incentive Amount',
+    #                 # color='Counts',
+    #                 color_continuous_scale='Blues',
+    #                 )
     
     fig.update_layout(
     width=1000,
