@@ -39,3 +39,5 @@ To get started with this project, you'll need to clone the repository and set up
 
 
 # Example
+<img width="1227" alt="Screenshot 2024-03-26 at 11 03 07 PM" src="https://github.com/jkmathilda/dv-iZEV/assets/142202145/74a470d2-045d-4b1c-b04a-623141838c47">
+<img width="1202" alt="Screenshot 2024-03-26 at 11 03 29 PM" src="https://github.com/jkmathilda/dv-iZEV/assets/142202145/c92bf52c-ea8d-4b9c-953c-94c7b6d5dbd9">
